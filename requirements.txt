@@ -1,0 +1,8 @@
+Flask
+Werkzeug
+flask_cors
+validate_email
+requests
+flask-swagger-ui
+schemathesis
+nose

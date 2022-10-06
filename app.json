@@ -1,0 +1,5 @@
+{
+    "name": "workshopfollower-api",
+    "description": "Example API For schemathesis workshop",
+    "keywords": ["python", "flask", "rest", "crud", "swagger-ui", "pylint", "pep8"]
+  }

@@ -1,0 +1,7 @@
+__pycache__/
+model/__pycache__
+routes/__pycache__
+.idea/
+.venv/
+.hypothesis/
+cassette.yaml

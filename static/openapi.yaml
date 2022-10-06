@@ -1,0 +1,231 @@
+---
+openapi: 3.0.1
+info:
+  title: "Workshop API"
+  description: "This is a simple project used for schemathesis workshop"
+  version: 1.0.0
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  contact:
+    email: mark.abrahams@rabobank.nl
+servers:
+- url: "https://validServer.io"
+- url: "http://validServer.io"
+paths:
+  /workshopfollowers:
+    get:
+      summary: "Get all existing Workshop Followers"
+      operationId: get_records
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workshopfollowers"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: "Unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: "Create a new Workshopfollower"
+      operationId: create_record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Workshopfollower"
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: "Unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /workshopfollowers/{id}:
+    get:
+      summary: "Get an existing workshop follower"
+      operationId: get_record_by_id
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the workshopfollower to return"
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "8c36e86c-13b9-4102-a44f-646015dfd981"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workshopfollower'
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                error: "Not found"
+        default:
+          description: "Unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: "Update a Workshopfollower"
+      operationId: edit_record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "8c36e86c-13b9-4102-a44f-646015dfd981"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Workshopfollower"
+            example:
+              name: "Changed Namos"
+              email: "changedemail@test.com"
+      responses:
+        "200":
+          description: "Updated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workshopfollower"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: "Unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: "Delete a Workshopfollower"
+      operationId: delete_record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "04cfc704-acb2-40af-a8d3-4611fab54ada"
+      responses:
+        "204":
+          description: "Deleted"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: "Unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /bullshit:
+    description: |
+      bullshit endpoint that should fail
+    get:
+      summary: 'returns some bullshit that is not valid'
+      responses:
+        "200":
+          description: 'scenario that occurs when value gets removed'
+          content:
+            application/json:
+              schema:
+                properties:
+                  naam:
+                    type: string
+#                  name:
+#                    type: string
+                  birthday:
+                    type: string
+                    format: date
+#                required:
+#                  - birthday
+                additionalProperties: false
+
+components:
+  schemas:
+    Workshopfollower:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - name
+        - email
+      additionalProperties: false
+    Workshopfollowers:
+      type: object
+      properties:
+        workshopfollowers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Workshopfollower'
+      additionalProperties: false
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      additionalProperties: false
